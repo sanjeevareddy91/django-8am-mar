@@ -1,0 +1,3 @@
+{% for ele in data %}
+    <a href="{% url 'update_team' ele.id %}">{{ele.team_name}}</a><br>
+{% endfor %}

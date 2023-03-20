@@ -1,0 +1,23 @@
+<form action="" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="container">
+      <h1>Register</h1>
+      <p>Please fill in this form to Add a Team.</p>
+      <hr>
+  
+      <label for="team_name"><b>Team Name</b></label>
+      <input type="text" placeholder="Enter Team Name" name="team_name" id="team_name" required><br>
+      <label for="nick_name"><b>Nick Name</b></label>
+      <input type="text" placeholder="Enter Nick Name" name="nick_name" id="nick_name" required><br>
+      <label for="captain_name"><b>Captain Name</b></label>
+      <input type="text" placeholder="Enter Captain Name" name="captain_name" id="captain_name" required><br>
+      <label for="started_year"><b>Started Year</b></label>
+      <input type="text" placeholder="Enter Started Year" name="started_year" id="started_year" required><br>
+      <label for="team_logo"><b>Team Logo</b></label>
+      <input type="file" placeholder="Enter Email" name="team_logo" id="team_logo" required>
+  
+      <hr>
+  
+      <button type="submit" class="registerbtn">Register</button>
+    </div>
+  </form>

@@ -1,0 +1,24 @@
+<form action="" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="container">
+      <h1>Update</h1>
+      <p>Please fill in this form to Update a Team.</p>
+      <hr>
+  
+      <label for="team_name"><b>Team Name</b></label>
+      <input type="text" placeholder="Enter Team Name" name="team_name" id="team_name" required value="{{data.team_name}}"><br>
+      <label for="nick_name"><b>Nick Name</b></label>
+      <input type="text" placeholder="Enter Nick Name" name="nick_name" id="nick_name" required value="{{data.nick_name}}"><br>
+      <label for="captain_name"><b>Captain Name</b></label>
+      <input type="text" placeholder="Enter Captain Name" name="captain_name" id="captain_name" required value="{{data.captain_name}}"><br>
+      <label for="started_year"><b>Started Year</b></label>
+      <input type="text" placeholder="Enter Started Year" name="started_year" id="started_year" required value="{{data.started_year}}"><br>
+      <label for="team_logo"><b>Team Logo</b></label>
+      <input type="file" name="team_logo" id="team_logo" required>{{data.team_logo}}
+  
+      <hr>
+  
+      <button type="submit" class="registerbtn">Update</button>
+    </div>
+</form>
+<a href="{% url 'delete_team' data.id %}"><button>Delete</button></a>
