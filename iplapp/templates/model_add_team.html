@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags  %}
+{% block content %}
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% crispy form %}
+    <!-- <div class="form-row">
+        <div class="form-group col-md-6 mb-0">
+          {{ form.team_name|as_crispy_field }}
+        </div>
+        <div class="form-group col-md-6 mb-0">
+          {{ form.nick_name|as_crispy_field }}
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6 mb-0">
+          {{ form.captain_name|as_crispy_field }}
+        </div>
+        <div class="form-group col-md-6 mb-0">
+          {{ form.started_year|as_crispy_field }}
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6 mb-0">
+          {{ form.team_logo|as_crispy_field }}
+        </div>
+    </div> -->
+</form>
+{% endblock %}

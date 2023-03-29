@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+<form action="" method="POST">
+    {% csrf_token %}
+    <div class="container">
+      <h1>Register</h1>
+      <p>Please fill in this form to Register a User.</p>
+      <hr>
+  
+      <label for="username"><b>User Name</b></label>
+      <input type="text" placeholder="Enter User Name" name="username" id="username" required><br>
+      <label for="password"><b>Password</b></label>
+      <input type="password" placeholder="Enter Password" name="password" id="password" required><br>
+      <label for="email"><b>Email</b></label>
+      <input type="text" placeholder="Enter Email" name="email" id="email" required><br>
+      <label for="mobile"><b>Mobile No.</b></label>
+      <input type="text" placeholder="Enter Mobile" name="mobile" id="mobile" required><br>  
+      <hr>
+  
+      <button type="submit" class="registerbtn">Register</button>
+    </div>
+  </form><br>
+  <a href="{% url 'login_user' %}"><button class="registerbtn">Login</button></a>
+{% endblock %}

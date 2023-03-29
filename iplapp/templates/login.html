@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+<form action="" method="POST">
+    {% csrf_token %}
+    <div class="container">
+      <h1>Login</h1>
+  
+      <label for="username"><b>User Name</b></label>
+      <input type="text" placeholder="Enter User Name" name="username" id="username" required><br>
+      <label for="password"><b>Password</b></label>
+      <input type="password" placeholder="Enter Password" name="password" id="password" required><br> 
+  
+      <button type="submit" class="registerbtn">Login</button>
+    </div>
+  </form>
+  <a href="{% url 'forgot_password_email_check' %}">Forgot Password?</a>
+{% endblock %}

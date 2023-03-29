@@ -1,3 +1,9 @@
-{% for ele in data %}
-    <a href="{% url 'update_team' ele.id %}">{{ele.team_name}}</a><br>
-{% endfor %}
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags  %}
+{% block content %}
+    <button><a href="{% url 'logout_user' %}">Logout</a></button><br>
+    {% for ele in data %}
+        <a href="{% url 'update_team' ele.id %}">{{ele.team_name}}</a><br>
+    {% endfor %}
+{% endblock %}

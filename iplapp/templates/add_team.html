@@ -1,3 +1,5 @@
+{% extends 'base.html' %}
+{% block content %}
 <form action="" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     <div class="container">
@@ -21,3 +23,4 @@
       <button type="submit" class="registerbtn">Register</button>
     </div>
   </form>
+{% endblock %}
