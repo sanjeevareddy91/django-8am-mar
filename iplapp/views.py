@@ -7,6 +7,8 @@ from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.contrib.auth import authenticate,login,logout
 import random
+
+from django.views import View
 # from django.contrib.auth import set_password
 
 # Create your views here.
@@ -197,4 +199,13 @@ def change_password(request,pk):
             return redirect('login_user')
     return render(request,'change_password.html')
 
-# 384297
+
+# Class based Views 
+
+class HelloCBV(View):
+    def get(self,request):
+        return HttpResponse("Hello World")
+
+class RegisterCBV(View):
+    def post(self,request):
+        return render(request,'register_user.html')

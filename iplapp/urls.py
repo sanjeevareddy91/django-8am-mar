@@ -17,5 +17,8 @@ urlpatterns = [
     path('logout/',views.logout_user,name='logout_user'),
     path('email_check/',views.forgot_password_email_check,name="forgot_password_email_check"),
     path('verify_otp/',views.verify_otp,name="verify_otp"),
-    path('change_password/<pk>',views.change_password,name="change_password")
+    path('change_password/<pk>',views.change_password,name="change_password"),
+    # class based urls
+    path('cbv_hello/',views.HelloCBV.as_view(),name="cbv_hello"),
+    path('cbv_register/',views.RegisterCBV.as_view(),name="cbv_register")
 ]
