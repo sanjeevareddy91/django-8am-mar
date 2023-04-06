@@ -20,5 +20,11 @@ urlpatterns = [
     path('change_password/<pk>',views.change_password,name="change_password"),
     # class based urls
     path('cbv_hello/',views.HelloCBV.as_view(),name="cbv_hello"),
-    path('cbv_register/',views.RegisterCBV.as_view(),name="cbv_register")
+    path('cbv_register_team/',views.RegisterTeamCBV.as_view(),name="cbv_register_team"),
+    path('cbv_list_team/',views.ListTeamCBV.as_view(),name="cbv_list_team"),
+    path('cbv_update_team/<pk>',views.UpdateTeamCBV.as_view(),name="cbv_update_team"),
+    path('cbv_detail_team/<pk>',views.DetailTeamCBV.as_view(),name="cbv_detail_team"),
+
+    # rest-framework urls
+    path('hello_api/',views.hello_api),
 ]

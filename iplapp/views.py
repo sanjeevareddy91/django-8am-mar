@@ -9,6 +9,12 @@ from django.contrib.auth import authenticate,login,logout
 import random
 
 from django.views import View
+
+from django.views.generic.edit import CreateView,UpdateView
+from django.urls import reverse_lazy
+from django.views.generic.list import ListView
+from django.views.generic.detail import DetailView
+
 # from django.contrib.auth import set_password
 
 # Create your views here.
@@ -206,6 +212,40 @@ class HelloCBV(View):
     def get(self,request):
         return HttpResponse("Hello World")
 
-class RegisterCBV(View):
-    def post(self,request):
-        return render(request,'register_user.html')
+class RegisterTeamCBV(CreateView):
+    model = Team_Name
+    fields = "__all__"
+    success_url = reverse_lazy('list_team')
+
+
+class ListTeamCBV(ListView):
+    model = Team_Name
+
+class UpdateTeamCBV(UpdateView):
+    model = Team_Name
+    fields = "__all__"
+    template_name_suffix = '_update_form'
+    success_url = reverse_lazy('list_team')
+
+class DetailTeamCBV(DetailView):
+    model = Team_Name
+
+
+# Django rest framework Topics
+
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+
+
+@api_view(['GET','POST'])
+def hello_api(request):
+    if request.method == "GET":
+        return Response({
+            'message' : "Hello World"
+        })
+    else:
+        name = request.data['name']
+        message = f"Hi {name},Very Gud mrng"
+        return Response({
+            'message' : message
+        })
