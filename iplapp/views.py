@@ -244,8 +244,50 @@ def hello_api(request):
             'message' : "Hello World"
         })
     else:
-        name = request.data['name']
-        message = f"Hi {name},Very Gud mrng"
+        try:
+            name = request.data['name']
+            message = f"Hi {name},Very Gud mrng"
+        except:
+            message = ""
         return Response({
             'message' : message
+        })
+
+@api_view(['GET','POST'])
+def team_name_api(request):
+    if request.method == "GET":
+        all_data = Team_Name.objects.all()
+        data = []
+        # import pdb;pdb.set_trace()
+
+        # Method1
+        # for ele in all_data:
+        #     dict1 = {}
+        #     dict1['team_name'] = ele.team_name
+        #     dict1['nick_name'] = ele.nick_name
+        #     dict1['team_logo'] = ele.team_logo.url
+        #     dict1['captain_name'] = ele.captain_name
+        #     dict1['started_year'] = ele.started_year
+        #     data.append(dict1)
+        # import pdb;pdb.set_trace()
+
+        # Method2
+        converted_data = all_data.values()
+        print(converted_data)
+        for ele in converted_data:
+            data.append(ele)
+        print(all_data)
+        return Response({
+            'teams' : data 
+        })
+    elif request.method == "POST":
+        data = request.data
+        data = {ele:value for ele,value in data.items()}
+        print(request.data)
+        obj_data = Team_Name.objects.create(**data)
+        data['team_logo'] = obj_data.team_logo.url
+        # import pdb;pdb.set_trace()
+        return Response({
+            "message":"Team created successfully!",
+            'team':data
         })

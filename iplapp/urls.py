@@ -27,4 +27,5 @@ urlpatterns = [
 
     # rest-framework urls
     path('hello_api/',views.hello_api),
+    path('team_name_api/',views.team_name_api)
 ]
