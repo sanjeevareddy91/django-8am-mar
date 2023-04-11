@@ -291,3 +291,84 @@ def team_name_api(request):
             "message":"Team created successfully!",
             'team':data
         })
+
+# Class Based APIVIEW.
+
+    # APIVIew
+    # Generic APIview
+    # Viewsets
+from rest_framework.views import APIView
+from .serializers import TeamNameSerializer
+class TeamNameAPIView(APIView):
+
+    def get(self,request):
+        data = Team_Name.objects.all()
+        serializer = TeamNameSerializer(data,many=True)
+        return Response({
+            'Teams':serializer.data
+        })
+
+    def post(self,request):
+        serializer = TeamNameSerializer(data=request.data)
+        # import pdb;pdb.set_trace()
+        if serializer.is_valid():
+            data = serializer.save()
+            # import pdb;pdb.set_trace()
+            serializer.data['team_logo'] = data.team_logo.url
+            return Response({
+                "message" : "Team Added",
+                "Team" : serializer.data
+            })
+        return Response({
+            "message":"Data is not valid"
+        })
+
+class TeamNameDetailAPIView(APIView):
+
+    def get(self,request,id):
+        get_data = Team_Name.objects.get(id=id)
+        serializer = TeamNameSerializer(get_data)
+        return Response({
+            "Team":serializer.data
+        })
+
+    def put(self,request,id):
+        get_data = Team_Name.objects.get(id=id)
+        serializer = TeamNameSerializer(get_data,data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({
+                "Message":"Team Details Updated"
+            })
+        return Response({
+            "message" : "Invalid data"
+        })
+
+    def delete(self,request,id):
+        get_data = Team_Name.objects.get(id=id)
+        get_data.delete()
+        return Response({
+            "message":"Team Deleted"
+        })
+
+
+# Generic APIview 
+
+
+# get - list
+# post - create
+# put - update
+# delete - destroy
+# get - retrieve
+
+from rest_framework import generics
+class TeamNameCreateListAPIView(generics.ListCreateAPIView):
+    queryset = Team_Name.objects.all()
+    serializer_class = TeamNameSerializer
+
+    def list(self,request):
+        return Response({
+            "message":"Team List API"
+        })
+    
+    # def create()
