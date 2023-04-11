@@ -292,6 +292,87 @@ def team_name_api(request):
             'team':data
         })
 
+@api_view(['GET','PUT','DELETE'])
+def team_update_delete_api(request,id):
+    data = Team_Name.objects.get(id=id)
+    if request.method == "GET":
+        # method1
+        # data1 = {
+        #     'team_name' : data.team_name,
+        #     'nick_name' : data.nick_name,
+        #     'team_logo' : data.team_logo.url,
+        #     'captain_name' : data.captain_name,
+        #     'started_year' : data.started_year
+        # }
+
+        # Method2
+        data = data.__dict__
+        data.pop('_state')
+        return Response({
+            'team' : data 
+        })
+    elif request.method == "PUT":
+        # import pdb;pdb.set_trace()
+        data = request.data
+        data = {ele:value for ele,value in request.data.items()}
+        check_data = Team_Name.objects.filter(id=id)
+        check_data.update(**data)
+        data['team_logo'] = check_data[0].team_logo.url
+        return Response({
+            'message' : "Team Updated",
+            'team' : data 
+        })
+    elif request.method == "DELETE":
+        data.delete()
+        return Response({
+            'message' : "Team Deleted"
+        })
+
+
+@api_view(['GET','POST'])
+def team_name_api_serializer(request):
+    if request.method == "GET":
+        all_data = Team_Name.objects.all()
+        serializer = TeamNameModelSerializer(all_data,many=True)
+        return Response({
+            'teams':serializer.data
+        })
+    elif request.method == "POST":
+        data = request.data
+        data = {ele:value for ele,value in data.items()}
+        serializer = TeamNameModelSerializer(data=data)
+        if serializer.is_valid(): # This will help in validating the data that is passed.
+            data_info = serializer.save()
+        data['team_logo'] = data_info.team_logo.url
+        return Response({
+            "message":"Team created successfully!",
+            'team':data
+        })
+
+@api_view(['GET','PUT','DELETE'])
+def team_update_delete_api_serializer(request,id):
+    data = Team_Name.objects.get(id=id)
+    if request.method == "GET":
+        serializer = TeamNameModelSerializer(data)
+        return Response({
+            'team' : serializer.data 
+        })
+    elif request.method == "PUT":
+        new_data = request.data
+        new_data = {ele:value for ele,value in new_data.items()}
+        serializer = TeamNameModelSerializer(data,data=new_data)
+        if serializer.is_valid(): # This will help in validating the data that is passed.
+            data_info = serializer.save()
+        return Response({
+            'message' : "Team Updated",
+            'team' : serializer.data 
+        })
+    elif request.method == "DELETE":
+        data.delete()
+        return Response({
+            'message' : "Team Deleted"
+        })
+
 # Class Based APIVIEW.
 
     # APIVIew
