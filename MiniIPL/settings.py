@@ -39,7 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'iplapp',
     'crispy_forms',
-    'rest_framework'
+    'rest_framework',
+    'drf_yasg',
+    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [
@@ -154,3 +156,10 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'your email'
 EMAIL_HOST_PASSWORD = 'your app password'
 EMAIL_USE_TLS = True
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',  # <-- And here
+    ],
+}

@@ -128,6 +128,7 @@ def register_user(request):
         data = {ele:value for ele,value in data.items() if ele != 'csrfmiddlewaretoken'}
         print(data)
         user_data = User.objects.create(username=data['username'],email=data['email'],is_staff=True)
+        Token.objects.create(user=user_data)
         user_data.set_password(data['password'])
         user_data.save()
         UserInfo.objects.create(user_data=user_data,mobile_no=data['mobile'])
@@ -333,14 +334,14 @@ def team_update_delete_api(request,id):
 def team_name_api_serializer(request):
     if request.method == "GET":
         all_data = Team_Name.objects.all()
-        serializer = TeamNameModelSerializer(all_data,many=True)
+        serializer = TeamNameSerializer(all_data,many=True)
         return Response({
             'teams':serializer.data
         })
     elif request.method == "POST":
         data = request.data
         data = {ele:value for ele,value in data.items()}
-        serializer = TeamNameModelSerializer(data=data)
+        serializer = TeamNameSerializer(data=data)
         if serializer.is_valid(): # This will help in validating the data that is passed.
             data_info = serializer.save()
         data['team_logo'] = data_info.team_logo.url
@@ -353,14 +354,14 @@ def team_name_api_serializer(request):
 def team_update_delete_api_serializer(request,id):
     data = Team_Name.objects.get(id=id)
     if request.method == "GET":
-        serializer = TeamNameModelSerializer(data)
+        serializer = TeamNameSerializer(data)
         return Response({
             'team' : serializer.data 
         })
     elif request.method == "PUT":
         new_data = request.data
         new_data = {ele:value for ele,value in new_data.items()}
-        serializer = TeamNameModelSerializer(data,data=new_data)
+        serializer = TeamNameSerializer(data,data=new_data)
         if serializer.is_valid(): # This will help in validating the data that is passed.
             data_info = serializer.save()
         return Response({
@@ -380,8 +381,10 @@ def team_update_delete_api_serializer(request,id):
     # Viewsets
 from rest_framework.views import APIView
 from .serializers import TeamNameSerializer
-class TeamNameAPIView(APIView):
+from rest_framework.permissions import IsAuthenticated
 
+class TeamNameAPIView(APIView):
+    permission_classes = (IsAuthenticated,) 
     def get(self,request):
         data = Team_Name.objects.all()
         serializer = TeamNameSerializer(data,many=True)
@@ -447,9 +450,23 @@ class TeamNameCreateListAPIView(generics.ListCreateAPIView):
     queryset = Team_Name.objects.all()
     serializer_class = TeamNameSerializer
 
-    def list(self,request):
-        return Response({
-            "message":"Team List API"
-        })
+    # def list(self,request):
+    #     return Response({
+    #         "message":"Team List API"
+    #     })
     
     # def create()
+
+
+class TeamNameListAPIView(generics.ListAPIView):
+    queryset = Team_Name.objects.all()
+    serializer_class = TeamNameSerializer
+
+class TeamNameRetrieveAPIView(generics.RetrieveAPIView):
+    queryset = Team_Name.objects.all()
+    serializer_class = TeamNameSerializer
+
+
+class TeamNameRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Team_Name.objects.all()
+    serializer_class = TeamNameSerializer    
