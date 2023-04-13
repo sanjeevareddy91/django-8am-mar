@@ -1,5 +1,5 @@
 
-from django.urls import path,re_path
+from django.urls import path,re_path,include
 from . import views
 
 from rest_framework.authtoken.views import obtain_auth_token
@@ -7,6 +7,7 @@ from rest_framework.authtoken.views import obtain_auth_token
 # from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
+from rest_framework import routers
 
 schema_view = get_schema_view(
    openapi.Info(
@@ -21,6 +22,10 @@ schema_view = get_schema_view(
 #    permission_classes=[permissions.AllowAny],
 )
 
+
+
+iplrouters = routers.DefaultRouter()
+iplrouters.register(r'team_name_model_viewset',views.TeamNameModelViewset)
 
 urlpatterns = [
     re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
@@ -62,4 +67,5 @@ urlpatterns = [
     path('team_name_retrieve_api/<pk>/',views.TeamNameRetrieveAPIView.as_view()),
     path('team_name_retrieve_update_destroy/<pk>/',views.TeamNameRetrieveUpdateDestroyAPIView.as_view()),
     path('api-token-auth/', obtain_auth_token, name='api_token_auth'),
+    path('',include(iplrouters.urls))
 ]

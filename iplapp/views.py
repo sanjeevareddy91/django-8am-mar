@@ -470,3 +470,14 @@ class TeamNameRetrieveAPIView(generics.RetrieveAPIView):
 class TeamNameRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Team_Name.objects.all()
     serializer_class = TeamNameSerializer    
+
+
+
+# ModelViewsets
+
+from rest_framework.viewsets import ModelViewSet 
+
+class TeamNameModelViewset(ModelViewSet):
+    queryset = Team_Name.objects.all()
+    serializer_class = TeamNameSerializer
+    permission_classes = (IsAuthenticated,)
