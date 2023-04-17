@@ -42,6 +42,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'drf_yasg',
     'rest_framework.authtoken',
+    'oauth2_provider',
+    'social_django',
+    'drf_social_oauth2',
 ]
 
 MIDDLEWARE = [
@@ -67,6 +70,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
@@ -158,21 +163,53 @@ EMAIL_HOST_PASSWORD = 'your app password'
 EMAIL_USE_TLS = True
 
 
+# REST_FRAMEWORK = {
+#     'DEFAULT_AUTHENTICATION_CLASSES': [
+#         # 'rest_framework.authentication.TokenAuthentication',  # <-- And here
+#         'rest_framework_simplejwt.authentication.JWTAuthentication',
+#     ],
+# }
+
+# JWT_AUTH = {
+#     # how long the original token is valid for
+#     'JWT_EXPIRATION_DELTA': datetime.timedelta(days=1),
+
+#     # allow refreshing of tokens
+#     'JWT_ALLOW_REFRESH': True,
+
+#     # this is the maximum time AFTER the token was issued that
+#     # it can be refreshed.  exprired tokens can't be refreshed.
+#     'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=2),
+# }
+
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        # 'rest_framework.authentication.TokenAuthentication',  # <-- And here
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        # 'oauth2_provider.ext.rest_framework.OAuth2Authentication',  # django-oauth-toolkit < 1.0.0
+        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',  # django-oauth-toolkit >= 1.0.0
+        'drf_social_oauth2.authentication.SocialAuthentication',
+    ),
 }
 
-JWT_AUTH = {
-    # how long the original token is valid for
-    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=1),
+AUTHENTICATION_BACKENDS = (
+    # Others auth providers (e.g. Google, OpenId, etc)
+    # Facebook OAuth2
+    'social_core.backends.facebook.FacebookAppOAuth2',
+    'social_core.backends.facebook.FacebookOAuth2',
 
-    # allow refreshing of tokens
-    'JWT_ALLOW_REFRESH': True,
+    # drf_social_oauth2
+    'drf_social_oauth2.backends.DjangoOAuth2',
 
-    # this is the maximum time AFTER the token was issued that
-    # it can be refreshed.  exprired tokens can't be refreshed.
-    'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=2),
+    # Django
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+# Facebook configuration
+SOCIAL_AUTH_FACEBOOK_KEY = '526275529704319'
+SOCIAL_AUTH_FACEBOOK_SECRET = '5e298a0bccd0d49496d3ab1bd6e9f431'
+
+# Define SOCIAL_AUTH_FACEBOOK_SCOPE to get extra permissions from Facebook.
+# Email is not sent by default, to get it, you must request the email permission.
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
+SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
+    'fields': 'id, name, email'
 }
